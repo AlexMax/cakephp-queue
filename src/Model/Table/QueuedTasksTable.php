@@ -288,11 +288,13 @@ class QueuedTasksTable extends Table {
 	 * Mark a job as Completed, removing it from the queue.
 	 *
 	 * @param int $id ID of task
+	 * @param string $log Log of task
 	 * @return bool Success
 	 */
-	public function markJobDone($id) {
+	public function markJobDone($id, $log) {
 		$fields = [
 			'completed' => time(),
+			'log' => $log,
 		];
 		$conditions = [
 			'id' => $id,
@@ -324,10 +326,11 @@ class QueuedTasksTable extends Table {
 	 * Mark a job as Failed, Incrementing the failed-counter and Requeueing it.
 	 *
 	 * @param int $id ID of task
+	 * @param string $log Log of task
 	 * @param string $failureMessage Optional message to append to the failure_message field.
 	 * @return bool Success
 	 */
-	public function markJobFailed($id, $failureMessage = null) {
+	public function markJobFailed($id, $log, $failureMessage = null) {
 		$db = $this->get($id);
 		if ($failureMessage === null) {
 			$failureMessage = $db->failure_message;
@@ -335,6 +338,7 @@ class QueuedTasksTable extends Table {
 		$fields = [
 			'failed = failed + 1',
 			'failure_message' => $failureMessage,
+			'log' => $log,
 		];
 		$conditions = [
 			'id' => $id,

@@ -150,7 +150,7 @@ class QueuedTasksTableTest extends TestCase {
 		$this->assertEquals(1, $this->QueuedTasks->getLength());
 
 		// Now mark Task1 as done
-		$this->assertEquals(1, $this->QueuedTasks->markJobDone(1));
+		$this->assertEquals(1, $this->QueuedTasks->markJobDone(1, ''));
 		// Should be 0 again.
 		$this->assertEquals(0, $this->QueuedTasks->getLength());
 	}
@@ -191,7 +191,7 @@ class QueuedTasksTableTest extends TestCase {
 		}
 		// now mark them as done
 		foreach (range(0, 4) as $num) {
-			$this->assertEquals(1, $this->QueuedTasks->markJobDone($num + 1));
+			$this->assertEquals(1, $this->QueuedTasks->markJobDone($num + 1, ''));
 			$this->assertEquals(9 - $num, $this->QueuedTasks->getLength());
 		}
 
@@ -200,7 +200,7 @@ class QueuedTasksTableTest extends TestCase {
 			$job = $this->QueuedTasks->requestJob($capabilities);
 			$jobData = unserialize($job['data']);
 			$this->assertEquals($num, $jobData['tasknum']);
-			$this->assertEquals(1, $this->QueuedTasks->markJobDone($job['id']));
+			$this->assertEquals(1, $this->QueuedTasks->markJobDone($job['id'], ''));
 			$this->assertEquals(9 - $num, $this->QueuedTasks->getLength());
 		}
 	}

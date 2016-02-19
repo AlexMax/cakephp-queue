@@ -5,6 +5,7 @@
  */
 namespace Queue\Shell\Task;
 
+use Cake\Console\ConsoleIo;
 use Cake\Console\Shell;
 
 /**
@@ -40,6 +41,29 @@ class QueueTask extends Shell {
 	 * @var bool
 	 */
 	public $autoUnserialize = true;
+
+	/**
+	 * Output from the job is stored here.
+	 *
+	 * @var string
+	 */
+	public $log = '';
+
+	/**
+	 * Output to the screen and to an internal property for later storage.
+	 *
+	 * @param string|array $message A string or an array of strings to output
+     * @param int $newlines Number of newlines to append
+     * @param int $level The message's output level, see above.
+     * @return int|bool Returns the number of bytes returned from writing to stdout.
+	 */
+	public function out($message = '', $newlines = 1, $level = ConsoleIo::NORMAL) {
+		if (is_array($message)) {
+			$message = implode(PHP_EOL, $message);
+		}
+		$this->log .= $message.str_repeat(PHP_EOL, $newlines);
+		return parent::out($message, $newlines, $level);
+	}
 
 	/**
 	 * Add functionality.

@@ -41,6 +41,7 @@ class QueuedTasksFixture extends TestFixture {
 		'failed' => ['type' => 'integer', 'length' => 3, 'null' => false, 'default' => '0'],
 		'failure_message' => ['type' => 'text', 'null' => true, 'default' => null],
 		'workerkey' => ['type' => 'string', 'length' => 45, 'null' => true, 'default' => null],
+		'log' => ['type' => 'text', 'null' => true, 'default' => null],
 		'_constraints' => [
 			'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
 		],

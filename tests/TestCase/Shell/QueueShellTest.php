@@ -3,6 +3,7 @@ namespace Queue\Test\TestCase\Shell;
 
 use Cake\Console\Shell;
 use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Queue\Shell\QueueShell;
 
@@ -101,6 +102,10 @@ class QueueShellTest extends TestCase {
 		$result = $this->QueueShell->runworker();
 		//debug($this->QueueShell->out);
 		$this->assertTrue(in_array('Running Job of type "Example"', $this->QueueShell->out));
+
+		$QueuedTasks = TableRegistry::get('QueuedTasks');
+		$this->assertCount(1, $QueuedTasks->find()->all());
+		$this->assertContains('->Success', $QueuedTasks->find()->first()->log);
 	}
 
 	/**
@@ -116,6 +121,10 @@ class QueueShellTest extends TestCase {
 		$result = $this->QueueShell->runworker();
 		//debug($this->QueueShell->out);
 		$this->assertTrue(in_array('Job did not finish, requeued.', $this->QueueShell->out));
+
+		$QueuedTasks = TableRegistry::get('QueuedTasks');
+		$this->assertCount(1, $QueuedTasks->find()->all());
+		$this->assertContains('->Sry', $QueuedTasks->find()->first()->log);
 	}
 
 }

@@ -212,15 +212,16 @@ class QueueShell extends Shell {
 						$data['data'] = unserialize($data['data']);
 					}
 					$return = $this->{$taskname}->run($data['data'], $data['id']);
+					$log = $this->{$taskname}->log;
 					if ($return) {
-						$this->QueuedTasks->markJobDone($data['id']);
+						$this->QueuedTasks->markJobDone($data['id'], $log);
 						$this->out('Job Finished.');
 					} else {
 						$failureMessage = null;
 						if (!empty($this->{$taskname}->failureMessage)) {
 							$failureMessage = $this->{$taskname}->failureMessage;
 						}
-						$this->QueuedTasks->markJobFailed($data['id'], $failureMessage);
+						$this->QueuedTasks->markJobFailed($data['id'], $log, $failureMessage);
 						$this->out('Job did not finish, requeued.');
 					}
 				} elseif (Configure::read('Queue.exitwhennothingtodo')) {
