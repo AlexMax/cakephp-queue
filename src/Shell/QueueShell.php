@@ -224,6 +224,7 @@ class QueueShell extends Shell {
 						$this->QueuedTasks->markJobFailed($data['id'], $log, $failureMessage);
 						$this->out('Job did not finish, requeued.');
 					}
+					$this->{$taskname}->clearLog();
 				} elseif (Configure::read('Queue.exitwhennothingtodo')) {
 					$this->out('nothing to do, exiting.');
 					$this->_exit = true;

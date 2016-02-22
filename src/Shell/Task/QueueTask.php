@@ -66,6 +66,13 @@ class QueueTask extends Shell {
 	}
 
 	/**
+	 * Clear the log.
+	 */
+	public function clearLog() {
+		$this->log = '';
+	}
+
+	/**
 	 * Add functionality.
 	 *
 	 * @return void
